@@ -16,10 +16,10 @@ import org.apache.log4j.Logger;
 import org.eclipse.emf.ecore.EObject;
 import org.eclipse.emfcloud.modelserver.client.XmiToEObjectSubscriptionListener;
 import org.eclipse.emfcloud.modelserver.command.CCommandExecutionResult;
+import org.eclipse.emfcloud.modelserver.glsp.actions.EMSRefreshModelAction;
 import org.eclipse.glsp.server.actions.ActionDispatcher;
 import org.eclipse.glsp.server.actions.SetDirtyStateAction;
 import org.eclipse.glsp.server.features.core.model.ModelSubmissionHandler;
-import org.eclipse.glsp.server.features.core.model.RequestBoundsAction;
 
 public class EMSSubscriptionListener extends XmiToEObjectSubscriptionListener {
 
@@ -49,12 +49,7 @@ public class EMSSubscriptionListener extends XmiToEObjectSubscriptionListener {
    }
 
    protected void refresh() {
-      // reload models
-      modelState.loadSourceModels();
-      // refresh GModelRoot
-      submissionHandler.submitModel(modelState);
-      // requestboundsaction in submissionhandler not enough?
-      actionDispatcher.dispatch(modelState.getClientId(), new RequestBoundsAction(modelState.getRoot()));
+      actionDispatcher.dispatch(modelState.getClientId(), new EMSRefreshModelAction());
    }
 
    @Override
